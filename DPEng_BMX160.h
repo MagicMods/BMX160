@@ -97,7 +97,7 @@
 		SENSOERTIME_0	= 0x18, 
 		SENSOERTIME_1	= 0x19, 
 		SENSOERTIME_2	= 0x1A, 
-		STATUS	   		= 0x1B, 
+		STATUSS	   		= 0x1B, 
 		INT_STATUS_0	= 0x1C, 
 		INT_STATUS_1	= 0x1D, 
 		INT_STATUS_2	= 0x1E, 
