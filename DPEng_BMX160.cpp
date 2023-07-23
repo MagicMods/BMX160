@@ -50,27 +50,27 @@
 
 /**************************************************************************/
 /*!
-    @brief  Abstract away platform differences in the Arduino wire library
+    @brief  Abstract away platform differences in the Arduino Wire1 library
     @param reg The register address to write to
     @param value The value to write to the specified register
 */
 /**************************************************************************/
 void DPEng_BMX160::write8(byte reg, byte value)
 {
-  Wire.beginTransmission(BMX160_ADDRESS);
+  Wire1.beginTransmission(BMX160_ADDRESS);
   #if ARDUINO >= 100
-    Wire.write((uint8_t)reg);
-    Wire.write((uint8_t)value);
+    Wire1.write((uint8_t)reg);
+    Wire1.write((uint8_t)value);
   #else
-    Wire.send(reg);
-    Wire.send(value);
+    Wire1.send(reg);
+    Wire1.send(value);
   #endif
-  Wire.endTransmission();
+  Wire1.endTransmission();
 }
 
 /**************************************************************************/
 /*!
-    @brief  Abstract away platform differences in the Arduino wire library
+    @brief  Abstract away platform differences in the Arduino Wire1 library
     @param reg The register address to read from
 */
 /**************************************************************************/
@@ -78,18 +78,18 @@ byte DPEng_BMX160::read8(byte reg)
 {
   byte value;
 
-  Wire.beginTransmission((byte)BMX160_ADDRESS);
+  Wire1.beginTransmission((byte)BMX160_ADDRESS);
   #if ARDUINO >= 100
-    Wire.write((uint8_t)reg);
+    Wire1.write((uint8_t)reg);
   #else
-    Wire.send(reg);
+    Wire1.send(reg);
   #endif
-  if (Wire.endTransmission(false) != 0) return 0;
-  Wire.requestFrom((byte)BMX160_ADDRESS, (byte)1);
+  if (Wire1.endTransmission(false) != 0) return 0;
+  Wire1.requestFrom((byte)BMX160_ADDRESS, (byte)1);
   #if ARDUINO >= 100
-    value = Wire.read();
+    value = Wire1.read();
   #else
-    value = Wire.receive();
+    value = Wire1.receive();
   #endif
 
   return value;
@@ -137,7 +137,7 @@ DPEng_BMX160::DPEng_BMX160(int32_t accelSensorID, int32_t gyroSensorID, int32_t 
 bool DPEng_BMX160::begin(bmx160AccelRange_t rngAccel, bmx160GyroRange_t rngGyro)
 {
   /* Enable I2C */
-  Wire.begin();
+  Wire1.begin();
 
   /* Set the range the an appropriate value */
   _rangeAccel = rngAccel;
@@ -341,62 +341,62 @@ bool DPEng_BMX160::getEvent(sensors_event_t* accelEvent, sensors_event_t* gyroEv
   magEvent->type      = SENSOR_TYPE_MAGNETIC_FIELD;
 
   /* Read 12 bytes from the bmx160 sensor */
-  Wire.beginTransmission((byte)BMX160_ADDRESS);
+  Wire1.beginTransmission((byte)BMX160_ADDRESS);
   #if ARDUINO >= 100
-    Wire.write(DATA_0);
+    Wire1.write(DATA_0);
   #else
-    Wire.send(DATA_0);
+    Wire1.send(DATA_0);
   #endif
-  Wire.endTransmission();
-  Wire.requestFrom((byte)BMX160_ADDRESS, (byte)23);
+  Wire1.endTransmission();
+  Wire1.requestFrom((byte)BMX160_ADDRESS, (byte)23);
   #if ARDUINO >= 100
-    uint8_t mxlo = Wire.read();
-    uint8_t mxhi = Wire.read();
-    uint8_t mylo = Wire.read();
-    uint8_t myhi = Wire.read();
-    uint8_t mzlo = Wire.read();
-    uint8_t mzhi = Wire.read();
-	uint8_t rhalllo = Wire.read();
-	uint8_t rhallhi = Wire.read();
-	uint8_t gxlo = Wire.read();
-	uint8_t gxhi = Wire.read();
-    uint8_t gylo = Wire.read();
-    uint8_t gyhi = Wire.read();
-    uint8_t gzlo = Wire.read();
-    uint8_t gzhi = Wire.read();
-    uint8_t axlo = Wire.read();
-	uint8_t axhi = Wire.read();
-    uint8_t aylo = Wire.read();
-    uint8_t ayhi = Wire.read();
-    uint8_t azlo = Wire.read();
-    uint8_t azhi = Wire.read();
-	uint8_t stlo = Wire.read();
-    uint8_t stmi = Wire.read();
-    uint8_t sthi = Wire.read();
+    uint8_t mxlo = Wire1.read();
+    uint8_t mxhi = Wire1.read();
+    uint8_t mylo = Wire1.read();
+    uint8_t myhi = Wire1.read();
+    uint8_t mzlo = Wire1.read();
+    uint8_t mzhi = Wire1.read();
+	uint8_t rhalllo = Wire1.read();
+	uint8_t rhallhi = Wire1.read();
+	uint8_t gxlo = Wire1.read();
+	uint8_t gxhi = Wire1.read();
+    uint8_t gylo = Wire1.read();
+    uint8_t gyhi = Wire1.read();
+    uint8_t gzlo = Wire1.read();
+    uint8_t gzhi = Wire1.read();
+    uint8_t axlo = Wire1.read();
+	uint8_t axhi = Wire1.read();
+    uint8_t aylo = Wire1.read();
+    uint8_t ayhi = Wire1.read();
+    uint8_t azlo = Wire1.read();
+    uint8_t azhi = Wire1.read();
+	uint8_t stlo = Wire1.read();
+    uint8_t stmi = Wire1.read();
+    uint8_t sthi = Wire1.read();
   #else
-    uint8_t mxlo = Wire.receive();
-    uint8_t mxhi = Wire.receive();
-    uint8_t mylo = Wire.receive();
-    uint8_t myhi = Wire.receive();
-    uint8_t mzlo = Wire.receive();
-    uint8_t mzhi = Wire.receive();
-	uint8_t rhalllo = Wire.receive();
-	uint8_t rhallhi = Wire.receive();
-	uint8_t gxlo = Wire.receive();
-	uint8_t gxhi = Wire.receive();
-    uint8_t gylo = Wire.receive();
-    uint8_t gyhi = Wire.receive();
-    uint8_t gzlo = Wire.receive();
-    uint8_t gzhi = Wire.receive();
-    uint8_t axlo = Wire.receive();
-	uint8_t axhi = Wire.receive();
-    uint8_t aylo = Wire.receive();
-    uint8_t ayhi = Wire.receive();
-    uint8_t azlo = Wire.receive();
-    uint8_t azhi = Wire.receive();
-	uint8_t stlo = Wire.receive();
-    uint8_t stmi = Wire.receive();
-    uint8_t sthi = Wire.receive();
+    uint8_t mxlo = Wire1.receive();
+    uint8_t mxhi = Wire1.receive();
+    uint8_t mylo = Wire1.receive();
+    uint8_t myhi = Wire1.receive();
+    uint8_t mzlo = Wire1.receive();
+    uint8_t mzhi = Wire1.receive();
+	uint8_t rhalllo = Wire1.receive();
+	uint8_t rhallhi = Wire1.receive();
+	uint8_t gxlo = Wire1.receive();
+	uint8_t gxhi = Wire1.receive();
+    uint8_t gylo = Wire1.receive();
+    uint8_t gyhi = Wire1.receive();
+    uint8_t gzlo = Wire1.receive();
+    uint8_t gzhi = Wire1.receive();
+    uint8_t axlo = Wire1.receive();
+	uint8_t axhi = Wire1.receive();
+    uint8_t aylo = Wire1.receive();
+    uint8_t ayhi = Wire1.receive();
+    uint8_t azlo = Wire1.receive();
+    uint8_t azhi = Wire1.receive();
+	uint8_t stlo = Wire1.receive();
+    uint8_t stmi = Wire1.receive();
+    uint8_t sthi = Wire1.receive();
   #endif  
 
 	
@@ -626,7 +626,7 @@ void DPEng_BMX160::standby(boolean standby)
   if (standby) {
 	  if(reg1 != 0) {
 	    /* Set accel to suspend mode */
-		write8(CMD, 0x11);
+		write8(CMD, 0x10);
 		delay(150);
 		/* Set gyro to suspend mode */
 		write8(CMD, 0x14);
@@ -638,7 +638,7 @@ void DPEng_BMX160::standby(boolean standby)
   } else {
 	  if(reg1 == 0) {
 	    /* Set accel to normal mode */
-		write8(CMD, 0x10);
+		write8(CMD, 0x11);
 		delay(150);
 		/* Set gyro to normal mode */
 		write8(CMD, 0x15);
